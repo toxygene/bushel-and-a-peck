@@ -8,7 +8,7 @@ define(function(require) {
     var pluck = require('mout/array/pluck');
     var Tree = require('view-models/Tree');
     var unique = require('mout/array/unique');
-    
+
     return L.Control.extend({
         disableMapMovement: function() {
             this.m.dragging.disable();
@@ -38,7 +38,7 @@ define(function(require) {
         },
         initialize: function(m, data) {
             L.Util.setOptions(this);
-            
+
             this.m = m;
 
             this.trees = ko.observableArray(map(data.trees, function(tree) {
@@ -51,18 +51,35 @@ define(function(require) {
                 }));
             }, this);
 
-            this.updateTreeTypeVisibilityHandler = this.updateTreeTypeVisibility.bind(this);
+            this.onLocationErrorHandler = this.onLocationError.bind(this);
+            this.onLocationUpdateHandler = this.onLocationUpdate.bind(this);
+
+            navigator.geolocation.watchPosition(this.onLocationUpdateHandler, this.onLocationErrorHandler, {
+                'enableHighAccuracy': true,
+                'timeout': 7500,
+                'maximumAge': 0
+            });
         },
         onAdd: function() {
             this.$element = $('#controls-container');
-            
+
             this.disableMapMovementHandler = this.disableMapMovement.bind(this);
             this.enableMapMovementHandler = this.enableMapMovement.bind(this);
 
             this.$element.on('mouseenter.MapControls', this.disableMapMovementHandler);
             this.$element.on('mouseleave.MapControls', this.enableMapMovementHandler);
-            
+
             return this.$element.get(0);
+        },
+        onLocationError: function(positionError) {
+        },
+        onLocationUpdate: function(position) {
+            if (!this.locationCircle) {
+                this.locationCircle = new L.circle([position.coords.latitude, position.coords.longitude], position.coords.accuracy);
+                this.m.addLayer(this.locationCircle);
+            } else {
+                this.locationCircle.setLatLng([position.coords.latitude, position.coords.longitude]).setRadius(position.coords.accuracy);
+            }
         },
         onRemove: function() {
             this.$element.off('mouseenter.MapControls', this.disableMapMovementHandler);

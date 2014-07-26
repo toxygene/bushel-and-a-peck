@@ -21,6 +21,12 @@ requirejs(['leaflet', 'view-models/MapControls', 'knockout'], function(L, MapCon
                 'type': 'Gala',
                 'latitude': 44.873571,
                 'longitude': -91.299130
+            },
+            {
+                'id': 189,
+                'type': 'Gala',
+                'latitude': 44.87359,
+                'longitude': -91.299130
             }
         ]
     });
