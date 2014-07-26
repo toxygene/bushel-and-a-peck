@@ -26,5 +26,5 @@ requirejs(['leaflet', 'view-models/MapControls', 'knockout'], function(L, MapCon
     });
 
     map.addControl(mapControls);
-    ko.applyBindings(mapControls);
+    ko.applyBindings(mapControls, $('#controls-container').get(0));
 });
