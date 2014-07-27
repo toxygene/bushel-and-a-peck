@@ -7,30 +7,42 @@ requirejs.config({
     }
 });
 
-requirejs(['leaflet', 'view-models/MapControls', 'knockout'], function(L, MapControls, ko) {
+requirejs(['jquery', 'knockout', 'leaflet', 'view-models/Tree'], function($, ko, L, Tree) {
     var map = L.map('map').setView([44.873571, -91.299130], 16);
     
     L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png', {
         attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
     }).addTo(map);
 
-    var mapControls = new MapControls(map, {
-        trees: [
+    L.geoJson({
+        "type": "FeaturesCollection",
+        "features": [
             {
-                'id': 188,
-                'type': 'Gala',
-                'latitude': 44.873571,
-                'longitude': -91.299130
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-91.299103, 44.873590]
+                },
+                "properties": {
+                    "type": "Gala"
+                }
             },
             {
-                'id': 189,
-                'type': 'Gala',
-                'latitude': 44.87359,
-                'longitude': -91.299130
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-91.299103, 44.873540]
+                },
+                "properties": {
+                    "type": "Honeycrisp"
+                }
             }
-        ]
-    });
 
-    map.addControl(mapControls);
-    ko.applyBindings(mapControls, $('#controls-container').get(0));
+        ]
+    }, {
+        pointToLayer: function(feature, layer) {
+            var tree = new Tree(feature);
+            return tree.getMarker();
+        }
+    }).addTo(map);
 });
