@@ -12,14 +12,6 @@
 
         <script data-main="scripts/config" src="bower_components/requirejs/require.js"></script>
 
-        <script type="text/html" id="tree-popup">
-            <div>
-                <div>Type: <span data-bind="text: type"></span></div>
-                <div><label>Latitude: <input type="text" data-bind="value: latitude" /></label></div>
-                <div><label>Longitude: <input type="text" data-bind="value: longitude" /></label></div>
-            </div>
-        </script>
-
         <style type="text/css">
             * {
                 margin: 0;
@@ -51,26 +43,20 @@
                 min-width: 20em;
                 padding: .5em;
             }
+
+            #popups {
+                display: none;
+            }
         </style>
     </head>
     <body>
         <div id="map"></div>
-        <div id="controls-container">
-            <h1>Controls</h1>
-            <div id="controls-sections">
-                <section>
-                    <h2>Add Tree</h2>
-                    <select></select>
-                    <button>Add</button>
-                </section>
-                <section>
-                    <h2>Trees</h2>
-                    <ol>
-                        <li>
-                            <label><input type="checkbox" checked /><span data-bind="text: $data"></span></label>
-                        </li>
-                    </ol>
-                </section>
+        <div id="popups" data-bind="foreach: trees">
+            <div data-bind="treeMarkerPopup">
+                <div>Type: <span data-bind="text: type"></span></div>
+                <div><label>Latitude: <input type="text" data-bind="value: latitude" /></label></div>
+                <div><label>Longitude: <input type="text" data-bind="value: longitude" /></label></div>
+                <div><button data-bind="click: $parent.onClickRemoveHandler">Remove</button></div>
             </div>
         </div>
     </body>
