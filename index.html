@@ -49,16 +49,16 @@
     <body>
         <div id="map"></div>
         <div id="controls-container">
-            <h1 class="js-toggle-controls-display">Controls</h1>
+            <h1>Controls</h1>
             <div id="controls-sections">
-                <section id="add-tree-controls">
+                <section>
                     <h2>Add Tree</h2>
                     <form>
-                        <select data-bind="options: typeNames"></select>
-                        <button>Add</button>
+                        <select data-bind="options: typeNames" id="tree-type"></select>
+                        <button id="add-tree">Add</button>
                     </form>
                 </section>
-                <section id="list-trees-control">
+                <section>
                     <h2>Trees</h2>
                     <ol id="tree-list" data-bind="foreach: types">
                         <li>

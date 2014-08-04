@@ -13,8 +13,6 @@ define(function(require) {
             attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
         }).addTo(this.map);
 
-        this.map.addControl(new AdminMapControls(this.types));
-
         this.types = ko.observableArray(map(data.types, function(type) {
             return new Type(this.map, type.name, type.trees);
         }, this));
@@ -27,6 +25,10 @@ define(function(require) {
                 }, this));
             }
         });
+        
+        this.types.subscribe(this.onChangeTypesHandler, null, 'arrayChange');
+
+        this.map.addControl(new AdminMapControls(this.types));
     };
 
     return AdminMapComponent;
