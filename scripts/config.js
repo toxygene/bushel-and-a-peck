@@ -9,16 +9,20 @@ requirejs.config({
 
 requirejs(['knockout', 'view-models/AdminMapComponent'], function(ko, AdminMapComponent) {
     var adminMapComponent = new AdminMapComponent({
-        trees: [{
-            id: 1,
-            latitude: 44.873,
-            longitude: -91.299,
-            type: "Gala"
-        },{
-            id: 2,
-            latitude: 44.875,
-            longitude: -91.301,
-            type: "Gala"
+        types: [{
+            name: 'Gala',
+            trees: [{
+                id: 1,
+                latitude: 44.873,
+                longitude: -91.299
+            }, {
+                id: 2,
+                latitude: 44.875,
+                longitude: -91.301,
+            }]
+        }, {
+            name: 'Honeycrisp',
+            trees: []
         }]
     });
 

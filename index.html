@@ -39,24 +39,33 @@
             #controls-container {
                 background-color: rgba(255,255,255,0.75);
                 border: 1px solid #000;
+                display: none;
                 margin-right: .5em;
                 min-width: 20em;
                 padding: .5em;
-            }
-
-            #popups {
-                display: none;
             }
         </style>
     </head>
     <body>
         <div id="map"></div>
-        <div id="popups" data-bind="foreach: trees">
-            <div data-bind="treeMarkerPopup">
-                <div>Type: <span data-bind="text: type"></span></div>
-                <div><label>Latitude: <input type="text" data-bind="value: latitude" /></label></div>
-                <div><label>Longitude: <input type="text" data-bind="value: longitude" /></label></div>
-                <div><button data-bind="click: $parent.onClickRemoveHandler">Remove</button></div>
+        <div id="controls-container">
+            <h1 class="js-toggle-controls-display">Controls</h1>
+            <div id="controls-sections">
+                <section id="add-tree-controls">
+                    <h2>Add Tree</h2>
+                    <form>
+                        <select data-bind="options: typeNames"></select>
+                        <button>Add</button>
+                    </form>
+                </section>
+                <section id="list-trees-control">
+                    <h2>Trees</h2>
+                    <ol id="tree-list" data-bind="foreach: types">
+                        <li>
+                            <label><input type="checkbox" data-bind="checked: visible" /><span data-bind="text: name"></span></label>
+                        </li>
+                    </ol>
+                </section>
             </div>
         </div>
     </body>

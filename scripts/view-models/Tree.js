@@ -1,19 +1,13 @@
 define(function(require) {
-    var $ = require('jquery');
     var ko = require('knockout');
+    var L = require('leaflet');
 
-    var Tree = function(id, type, latitude, longitude) {
+    var Tree = function(id, latitude, longitude) {
         this.id = ko.observable(id);
-        this.type = ko.observable(type);
         this.latitude = ko.observable(latitude);
         this.longitude = ko.observable(longitude);
 
-        this.marker = new L.Marker(
-            [this.latitude(), this.longitude()],
-            {
-                title: this.type + " (" + this.latitude() + ',' + this.longitude() + ')'
-            }
-        );
+        this.marker = new L.Marker([this.latitude(), this.longitude()]);
 
         this.latitude.subscribe(function(newValue) {
             this.marker.setLatLng([newValue, this.longitude()]);
