@@ -31,7 +31,23 @@ define(function(require) {
                 return type.name() === typeName;
             });
 
-            type.trees.push(new Tree(null, map.getCenter().lat, map.getCenter().lng));
+            if ($('#location-geolocation').prop('checked')) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        var tree = new Tree(null, position.coords.latitude, position.coords.longitude);
+                        type.trees.push(tree);
+                        tree.marker.openPopup();
+                    },
+                    null,
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else if ($('#location-map-center').prop('checked')) {
+                type.trees.push(new Tree(null, map.getCenter().lat, map.getCenter().lng));
+            }
         },
         onMouseEnter: function(event) {
             var map = event.data;
