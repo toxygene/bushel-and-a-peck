@@ -26,8 +26,6 @@ define(function(require) {
             }
         });
         
-        this.types.subscribe(this.onChangeTypesHandler, null, 'arrayChange');
-
         this.map.addControl(new AdminMapControls(this.types));
     };
 
