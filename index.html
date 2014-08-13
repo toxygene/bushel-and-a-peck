@@ -50,21 +50,18 @@
     <body>
         <div id="map"></div>
         <div id="controls-container" class="leaflet-control-layers leaflet-control-layers-expanded leaflet-control">
-            <h1>Controls</h1>
-            <div id="controls-sections">
-                <section>
-                    <h2>Add Tree</h2>
-                    <form>
-                        <select data-bind="options: typeNames" id="tree-type"></select>
-                        <fieldset>
-                            <legend>Location</legend>
-                            <div><label><input id="location-geolocation" name="location" type="radio" checked /> Current Location</label></div>
-                            <div><label><input id="location-map-center" name="location" type="radio" /> Center of Map</label></div>
-                        </fieldset>
-                        <div><button id="add-tree">Add Tree</button></div>
-                    </form>
-                </section>
-            </div>
+            <section>
+                <h2>Add Tree</h2>
+                <form>
+                    <label>Type: <select data-bind="options: typeNames" id="tree-type"></select></label>
+                    <fieldset>
+                        <legend>Location</legend>
+                        <div><label><input id="location-geolocation" name="location" type="radio" checked /> Current Location</label></div>
+                        <div><label><input id="location-map-center" name="location" type="radio" /> Center of Map</label></div>
+                    </fieldset>
+                    <div><button id="add-tree">Add Tree</button></div>
+                </form>
+            </section>
         </div>
     </body>
 </html>
