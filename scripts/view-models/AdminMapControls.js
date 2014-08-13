@@ -23,9 +23,9 @@ define(function(require) {
         },
         onClickAddTree: function(event) {
             event.preventDefault();
-     
+
             var map = event.data;
-            
+
             var typeName = $('#tree-type').val();
             var type = find(this.types(), function(type) {
                 return type.name() === typeName;
@@ -51,7 +51,7 @@ define(function(require) {
         },
         onMouseEnter: function(event) {
             var map = event.data;
-            
+
             map.dragging.disable();
             map.touchZoom.disable();
             map.doubleClickZoom.disable();

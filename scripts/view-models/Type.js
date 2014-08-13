@@ -21,7 +21,7 @@ define(function(require) {
 
         this.layer = L.layerGroup(map(this.trees(), function(tree) {
             return tree.marker;
-        })).addTo(this.map);
+        }));
     };
     
     Type.prototype.onChangeTrees = function(changes) {

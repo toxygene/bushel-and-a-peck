@@ -13,9 +13,17 @@ define(function(require) {
             attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
         }).addTo(this.map);
 
+        this.layerControls = L.control.layers(null, null, { collapsed: false });
+
         this.types = ko.observableArray(map(data.types, function(type) {
-            return new Type(this.map, type.name, type.trees);
+            var type = new Type(this.map, type.name, type.trees);
+            this.layerControls.addOverlay(type.layer, type.name());
+            type.layer.addTo(this.map);
+            return type;
         }, this));
+
+        this.map.addControl(new AdminMapControls(this.types));
+        this.layerControls.addTo(this.map);
 
         this.typeNames = ko.computed({
             owner: this,
@@ -25,8 +33,6 @@ define(function(require) {
                 }, this));
             }
         });
-        
-        this.map.addControl(new AdminMapControls(this.types));
     };
 
     return AdminMapComponent;

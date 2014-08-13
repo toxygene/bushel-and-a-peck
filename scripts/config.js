@@ -22,7 +22,11 @@ requirejs(['knockout', 'view-models/AdminMapComponent'], function(ko, AdminMapCo
             }]
         }, {
             name: 'Honeycrisp',
-            trees: []
+            trees: [{
+                id: 1,
+                latitude: 44.874,
+                longitude: -91.298
+            }]
         }]
     });
 

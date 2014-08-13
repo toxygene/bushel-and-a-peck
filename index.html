@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Test</title>
+        <title>Bushel and a Peck</title>
 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -45,20 +45,11 @@
             #map {
                 height: 100%;
             }
-
-            #controls-container {
-                background-color: rgba(255,255,255,0.75);
-                border: 1px solid #000;
-                display: none;
-                margin-right: .5em;
-                min-width: 20em;
-                padding: .5em;
-            }
         </style>
     </head>
     <body>
         <div id="map"></div>
-        <div id="controls-container">
+        <div id="controls-container" class="leaflet-control-layers leaflet-control-layers-expanded leaflet-control">
             <h1>Controls</h1>
             <div id="controls-sections">
                 <section>
@@ -72,14 +63,6 @@
                         </fieldset>
                         <div><button id="add-tree">Add Tree</button></div>
                     </form>
-                </section>
-                <section>
-                    <h2>Trees</h2>
-                    <ol id="tree-list" data-bind="foreach: types">
-                        <li>
-                            <label><input type="checkbox" data-bind="checked: visible" /><span data-bind="text: name"></span></label>
-                        </li>
-                    </ol>
                 </section>
             </div>
         </div>
