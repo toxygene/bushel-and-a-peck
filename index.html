@@ -12,6 +12,16 @@
 
         <script data-main="scripts/config" src="bower_components/requirejs/require.js"></script>
 
+        <script type="text/html" id="popup-template">
+            <div>
+                <div>ID: <span data-bind="text: id"></span></div>
+                <div><label>Latitude: <input data-bind="value: latitude" type="text" /></label></div>
+                <div><label>Longitude: <input data-bind="value: longitude" type="text" /></label></div>
+                <div><button>Save</button></div>
+                <div><button>Delete</button></div>
+            </div>
+        </script>
+
         <style type="text/css">
             * {
                 margin: 0;

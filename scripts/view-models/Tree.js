@@ -8,6 +8,11 @@ define(function(require) {
         this.longitude = ko.observable(longitude);
 
         this.marker = new L.Marker([this.latitude(), this.longitude()]);
+        
+        var $popup = $('<div data-bind="template: { name: \'popup-template\' }"></div>');
+        ko.applyBindings(this, $popup.get(0));
+        
+        this.marker.bindPopup($popup.get(0));
 
         this.latitude.subscribe(function(newValue) {
             this.marker.setLatLng([newValue, this.longitude()]);
