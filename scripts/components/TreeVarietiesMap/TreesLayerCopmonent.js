@@ -18,10 +18,9 @@ define(function(require) {
         },
         onTreesChange: function(changes) {
             forEach(changes, function(change) {
-                this.addLayer(L.marker([
-                    change.value.latitude(),
-                    change.value.longitude()
-                ]));
+                this.addLayer(L.marker([change.value.latitude(), change.value.longitude()], {
+                    icon: L.divIcon({ className: 'varieties-trees-map-icon' })
+                }));
             }, this.layerGroup);
         }
     });
