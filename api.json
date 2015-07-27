@@ -48,25 +48,29 @@
             "type": "tree",
             "id": "1",
             "latitude": "60.14662",
-            "longitude": "150.04402"
+            "longitude": "150.04402",
+            "variety_id": "1"
         },
         {
             "type": "tree",
             "id": "2",
             "latitude": "-58.59830",
-            "longitude": "91.41725"
+            "longitude": "91.41725",
+            "variety_id": "1"
         },
         {
             "type": "tree",
             "id": "3",
             "latitude": "17.12886",
-            "longitude": "-11.03874"
+            "longitude": "-11.03874",
+            "variety_id": "1"
         },
         {
             "type": "tree",
             "id": "4",
             "latitude": "-19.65773",
-            "longitude": "37.02619"
+            "longitude": "37.02619",
+            "variety_id": "2"
         }
     ]
 }
