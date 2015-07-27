@@ -12,16 +12,6 @@
 
         <script data-main="scripts/config" src="bower_components/requirejs/require.js"></script>
 
-        <script type="text/html" id="popup-template">
-            <div>
-                <div>ID: <span data-bind="text: id"></span></div>
-                <div><label>Latitude: <input data-bind="value: latitude" type="text" /></label></div>
-                <div><label>Longitude: <input data-bind="value: longitude" type="text" /></label></div>
-                <div><button>Save</button></div>
-                <div><button>Delete</button></div>
-            </div>
-        </script>
-
         <style type="text/css">
             * {
                 margin: 0;
@@ -42,26 +32,34 @@
             
             BODY,
             HTML,
-            #map {
+            .js-tree-varieties-map,
+            .js-map {
                 height: 100%;
             }
         </style>
     </head>
     <body>
-        <div id="map"></div>
-        <div id="controls-container" class="leaflet-control-layers leaflet-control-layers-expanded leaflet-control">
-            <section>
-                <h2>Add Tree</h2>
-                <form>
-                    <label>Type: <select data-bind="options: typeNames" id="tree-type"></select></label>
-                    <fieldset>
-                        <legend>Location</legend>
-                        <div><label><input id="location-geolocation" name="location" type="radio" checked /> Current Location</label></div>
-                        <div><label><input id="location-map-center" name="location" type="radio" /> Center of Map</label></div>
-                    </fieldset>
-                    <div><button id="add-tree">Add Tree</button></div>
-                </form>
-            </section>
+        <div class="js-tree-varieties-map">
+            <div class="js-map" data-latitude="44.873571" data-longitude="-91.299130" data-zoom="16">
+                <script type="text/html" id="popup-template">
+                    <div>
+                        <div>ID: <span data-bind="text: id"></span></div>
+                        <div><label>Variety: <select></select></label></div>
+                        <div><label>Latitude: <input data-bind="value: latitude" type="text" /></label></div>
+                        <div><label>Longitude: <input data-bind="value: longitude" type="text" /></label></div>
+                        <div><button>Save</button></div>
+                        <div><button>Delete</button></div>
+                    </div>
+                </script>
+                <script type="text/html" id="varieties-control-template">
+                    <div>
+                        <h4>Toggle Tree Types</h4>
+                        <ol data-bind="foreach: varieties">
+                            <li data-bind="visible: hasTrees"><label><input type="checkbox" data-bind="checked: display" /> <span data-bind="text: name"></span></label></li>
+                        </ol>
+                    </div>
+                </script>
+            </div>
         </div>
     </body>
 </html>

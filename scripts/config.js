@@ -1,34 +1,15 @@
 requirejs.config({
     paths: {
+        handlebars: '../bower_components/handlebars/handlebars.runtime.amd',
         jquery: '../bower_components/jquery/dist/jquery',
         knockout: '../bower_components/knockout/dist/knockout',
         leaflet: '../bower_components/leaflet/dist/leaflet',
-        mout: '../bower_components/mout/src'
+        mout: '../bower_components/mout/src',
+        orbit: '../bower_components/orbit.js/orbit.amd.min',
+        rsvp: '../bower_components/rsvp/rsvp.min'
     }
 });
 
-requirejs(['knockout', 'view-models/AdminMapComponent'], function(ko, AdminMapComponent) {
-    var adminMapComponent = new AdminMapComponent({
-        types: [{
-            name: 'Gala',
-            trees: [{
-                id: 1,
-                latitude: 44.873,
-                longitude: -91.299
-            }, {
-                id: 2,
-                latitude: 44.875,
-                longitude: -91.301,
-            }]
-        }, {
-            name: 'Honeycrisp',
-            trees: [{
-                id: 1,
-                latitude: 44.874,
-                longitude: -91.298
-            }]
-        }]
-    });
-
-    ko.applyBindings(adminMapComponent);
+requirejs(['App', 'jquery'], function(App, $) {
+    new App($('body')).run();
 });

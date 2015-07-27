@@ -17,12 +17,14 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.1.1",
-    "requirejs": "~2.1.14",
-    "googlemaps-amd": "~1.0.1",
-    "bootstrap": "~3.2.0",
-    "leaflet": "~0.7.3",
-    "knockout": "~3.1.0",
-    "mout": "~0.9.1"
+    "jquery": "~2.1",
+    "requirejs": "~2.1",
+    "googlemaps-amd": "~1.0",
+    "bootstrap": "~3.2",
+    "leaflet": "~0.7",
+    "knockout": "~3.1",
+    "mout": "~0.9",
+    "handlebars": "~3.0.3",
+    "rsvp": "~3.0.18"
   }
 }

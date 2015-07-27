@@ -1,0 +1,72 @@
+{
+    "data": [
+        {
+            "type": "variety",
+            "id": "1",
+            "attributes": {
+                "name": "Gala"
+            },
+            "relationships": {
+                "trees": {
+                    "data": [
+                        { "type": "tree", "id": "1" },
+                        { "type": "tree", "id": "2" },
+                        { "type": "tree", "id": "3" }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "variety",
+            "id": "1",
+            "attributes": {
+                "name": "Granny Smith"
+            },
+            "relationships": {
+                "trees": {
+                    "data": [
+                        { "type": "tree", "id": "4" }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "variety",
+            "id": "1",
+            "attributes": {
+                "name": "McIntosh"
+            },
+            "relationships": {
+                "trees": {
+                    "data": []
+                }
+            }
+        }
+    ],
+    "included": [
+        {
+            "type": "tree",
+            "id": "1",
+            "latitude": "60.14662",
+            "longitude": "150.04402"
+        },
+        {
+            "type": "tree",
+            "id": "2",
+            "latitude": "-58.59830",
+            "longitude": "91.41725"
+        },
+        {
+            "type": "tree",
+            "id": "3",
+            "latitude": "17.12886",
+            "longitude": "-11.03874"
+        },
+        {
+            "type": "tree",
+            "id": "4",
+            "latitude": "-19.65773",
+            "longitude": "37.02619"
+        }
+    ]
+}
