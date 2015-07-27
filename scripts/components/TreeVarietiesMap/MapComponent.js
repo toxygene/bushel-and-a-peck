@@ -9,17 +9,17 @@ define(function(require) {
     var Tree = require('models/TreeModel');
     var Variety = require('models/VarietyModel');
     var VarietyLayers = require('components/TreeVarietiesMap/VarietyLayersComponent');
-    
+
     var MapComponent = function(element, options) {
         BaseComponent.call(this, element, options);
 
         this.varieties = ko.observableArray();
     };
-    
+
     MapComponent.SELECTOR = '.js-map';
-    
+
     var proto = inheritPrototype(MapComponent, BaseComponent);
-    
+
     proto.createChildren = function() {
         this.map = L.map(
             this.$element.get(0),
@@ -79,6 +79,8 @@ define(function(require) {
                 var tree = new Tree();
 
                 tree.id = treeRelationship.id;
+                
+                tree.variety_id(treeData.variety_id);
                 tree.latitude(treeData.latitude);
                 tree.longitude(treeData.longitude);
 
