@@ -1,17 +1,20 @@
 define(function(require) {
     var ko = require('knockout');
 
-    var Variety = function() {
+    var VarietyModel = function() {
         this.id = null;
         this.name = null;
-
+        
         this.trees = ko.observableArray();
-        this.display = ko.observable(true);
-
-        this.hasTrees = ko.computed(function() {
-            return this.trees().length > 0;
-        }.bind(this));
     };
     
-    return Variety;
+    VarietyModel.build = function(id, name) {
+        var variety = new VarietyModel();
+        variety.id = id;
+        variety.name = name;
+        
+        return variety;
+    };
+    
+    return VarietyModel;
 });

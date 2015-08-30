@@ -7,6 +7,12 @@ define(function(require) {
         TreeVarietiesMapComponent
     ];
 
+    /**
+     * Component initializer for the application
+     *
+     * @constructor
+     * @param {jQuery} $element
+     */
     var App = function($element) {
         this.$element = $element;
     };
