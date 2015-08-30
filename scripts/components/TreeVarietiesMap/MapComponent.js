@@ -1,12 +1,12 @@
 define(function(require) {
     var Ajax = require('utils/Ajax');
     var BaseComponent = require('components/BaseComponent');
-    var find = require('mout/collection/find');
-    var forEach = require('mout/collection/forEach');
+    var find = require('mout/array/find');
+    var forEach = require('mout/array/forEach');
     var inheritPrototype = require('mout/lang/inheritPrototype');
     var ko = require('knockout');
     var L = require('leaflet');
-    var map = require('mout/collection/map');
+    var map = require('mout/array/map');
     var Tree = require('models/TreeModel');
     var Variety = require('models/VarietyModel');
     var VarietyLayers = require('components/TreeVarietiesMap/VarietyLayersComponent');
@@ -113,27 +113,28 @@ define(function(require) {
                         tree.id,
                         tree.latitude,
                         tree.longitude,
-                        find(this.varieties, function(variety) {
+                        find(this.varieties(), function(variety) {
                             return variety.id == tree.variety_id;
                         })
                     );
-                }
+                }.bind(this)
             ),
             this.addTree.bind(this)
         );
     };
 
     proto.addTree = function(tree) {
-        var variety = find(this.varieties, function(variety) {
+        var variety = find(this.varieties(), function(variety) {
             return variety == tree.variety();
         });
         
         if (!variety) {
             return;
         }
-        
+
         variety.trees.push(tree);
 
+/*
         tree.variety.subscribe(function(oldVariety) {
             var variety = find(
                 this,
@@ -159,6 +160,7 @@ define(function(require) {
                 variety.trees.push(tree);
             }
         });
+*/
     };
     
     proto.addVariety = function(variety) {

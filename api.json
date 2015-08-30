@@ -2,20 +2,20 @@
     "data": [{
         "type": "tree",
         "id": 1,
-        "latitude": 0,
-        "longitude": 0,
+        "latitude": 44.8735,
+        "longitude": -91.3015,
         "variety_id": 1
     }, {
         "type": "tree",
         "id": 2,
-        "latitude": 0,
-        "longitude": 0,
+        "latitude": 44.873571,
+        "longitude": -91.30,
         "variety_id": 1
     }, {
         "type": "tree",
         "id": 3,
-        "latitude": 0,
-        "longitude": 0,
+        "latitude": 44.873571,
+        "longitude": -91.3015,
         "variety_id": 2
     }],
     "included": [{

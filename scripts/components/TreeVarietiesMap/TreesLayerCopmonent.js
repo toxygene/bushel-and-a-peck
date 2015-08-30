@@ -7,15 +7,15 @@ define(function(require) {
          * Initialize the trees layer
          *
          * @constructor
-         * @param {Variety} variety
+         * @param {Array[]} trees
          */
-        initialize: function(variety) {
+        initialize: function(trees) {
             this.layerGroup = L.layerGroup();
-            this.variety = variety;
-            
+            this.trees = trees;
+
             this.onTreesChangeHandler = this.onTreesChange.bind(this);
-            
-            //variety.trees.subscribe(this.onTreesChangeHandler, null, 'arrayChange');
+
+            this.trees.subscribe(this.onTreesChangeHandler, null, 'arrayChange');
         },
         /**
          * On add

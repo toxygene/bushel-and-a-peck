@@ -19,7 +19,7 @@ define(function(require) {
         },
         onVarietiesChange: function(changes) {
             forEach(changes, function(change) {
-                this.addOverlay(new TreesLayer(change.value), change.value.name);
+                this.addOverlay(new TreesLayer(change.value.trees), change.value.name);
             }, this.controlLayers);
         }
     });
