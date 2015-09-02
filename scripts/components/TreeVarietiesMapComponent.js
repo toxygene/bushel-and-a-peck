@@ -1,4 +1,6 @@
 define(function(require) {
+    "use strict";
+
     var $ = require('jquery');
     var BaseComponent = require('components/BaseComponent');
     var inheritPrototype = require('mout/lang/inheritPrototype');
@@ -13,7 +15,7 @@ define(function(require) {
      */
     var TreeVarietiesMapComponent = function($element, options) {
         BaseComponent.call(this, $element, options);
-    }
+    };
 
     TreeVarietiesMapComponent.SELECTOR = '.js-tree-varieties-map';
 

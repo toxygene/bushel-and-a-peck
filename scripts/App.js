@@ -1,4 +1,6 @@
 define(function(require) {
+    "use strict";
+
     var $ = require('jquery');
     var forEach = require('mout/array/forEach');
     var TreeVarietiesMapComponent = require('components/TreeVarietiesMapComponent');

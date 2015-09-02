@@ -1,4 +1,6 @@
 define(function(require) {
+    "use strict";
+
     /**
      * Base component
      *

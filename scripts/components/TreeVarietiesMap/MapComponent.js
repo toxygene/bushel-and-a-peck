@@ -1,8 +1,10 @@
 define(function(require) {
-    var Ajax = require('utils/Ajax');
+    "use strict";
+
     var BaseComponent = require('components/BaseComponent');
     var find = require('mout/array/find');
     var forEach = require('mout/array/forEach');
+    var GetJson = require('utils/GetJson');
     var inheritPrototype = require('mout/lang/inheritPrototype');
     var ko = require('knockout');
     var L = require('leaflet');
@@ -15,8 +17,8 @@ define(function(require) {
      * Map component
      *
      * @constuctor
-     * @param {$element} element
-     * @param {Object] options
+     * @param {jQuery} $element
+     * @param {Object} options
      */
     var MapComponent = function($element, options) {
         BaseComponent.call(this, $element, options);
@@ -80,12 +82,7 @@ define(function(require) {
      * Load the trees from the API endpoint
      */
     proto.loadTrees = function() {
-        var promise = Ajax({
-            cache: false,
-            url: 'api.json'
-        });
-
-        promise.done(this.onTreesLoadedHandler);
+        GetJson('api.json').then(this.onTreesLoadedHandler);
     };
     
     /**

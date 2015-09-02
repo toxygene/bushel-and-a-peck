@@ -1,4 +1,6 @@
 define(function(require) {
+    "use strict";
+
     var ko = require('knockout');
 
     var VarietyModel = function() {

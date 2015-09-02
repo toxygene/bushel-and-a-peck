@@ -1,3 +1,5 @@
+"use strict";
+
 requirejs.config({
     paths: {
         handlebars: '../bower_components/handlebars/handlebars.runtime.amd',
