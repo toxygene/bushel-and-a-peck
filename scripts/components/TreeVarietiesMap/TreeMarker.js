@@ -37,11 +37,16 @@ define(function(require) {
         this.onClickDeleteHandler = this.onClickDelete.bind(this);
         this.onClickSaveHandler = this.onClickSave.bind(this);
         this.onPopupOpenHandler = this.onPopupOpen.bind(this);
+        this.onLatLngChangeHandler = this.onLatLngChange.bind(this);
 
         // Events
         this.$content.find('.delete').on('click', this.onClickDeleteHandler);
         this.$content.find('.save').on('click', this.onClickSaveHandler);
         this.marker.on('popupopen', this.onPopupOpenHandler);
+
+        // Observers
+        this.tree.latitude.subscribe(this.onLatLngChangeHandler);
+        this.tree.longitude.subscribe(this.onLatLngChangeHandler);
 
         this.marker
             .bindPopup(this.$content.get(0));
@@ -59,11 +64,25 @@ define(function(require) {
     proto.onClickSave = function(event) {
         event.preventDefault();
 
-        this.tree.variety_id(this.$variety.val());
-        this.tree.latitude(this.$latitude.val());
-        this.tree.longitude(this.$longitude.val());
+        if (this.$variety.val() !== this.tree.variety_id()) {
+            //this.tree.variety_id(this.$variety.val());
+        }
+
+        if (this.$latitude.val() !== this.tree.latitude()) {
+            this.tree.latitude(this.$latitude.val());
+        }
+
+        if (this.$longitude.val() !== this.tree.longitude()) {
+            this.tree.longitude(this.$longitude.val());
+        }
 
         this.marker.closePopup();
+    };
+
+    proto.onLatLngChange = function(event) {
+        this.marker
+            .setLatLng([this.tree.latitude(), this.tree.longitude()])
+            .update();
     };
 
     proto.onPopupOpen = function(event) {
