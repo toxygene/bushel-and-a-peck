@@ -2,6 +2,7 @@ define(function(require) {
     "use strict";
 
     var L = require('leaflet');
+    var map = require('mout/array/map');
 
     var popupContent = '\
 <div>\
@@ -17,7 +18,7 @@ define(function(require) {
     var TreeMarker = L.Class.extend({});
     var proto = TreeMarker.prototype;
 
-    proto.initialize = function(tree) {
+    proto.initialize = function(treeVarieties, tree) {
         this.$content = $(popupContent);
 
         this.$id = this.$content.find('.id');
@@ -25,13 +26,15 @@ define(function(require) {
         this.$latitude = this.$content.find('.latitude');
         this.$longitude = this.$content.find('.longitude');
 
+        this.tree = tree;
+        this.treeVarieties = treeVarieties;
+
         this.marker = L.marker(
             [tree.latitude(), tree.longitude()],
             {
                 opacity: 0.75
             }
         );
-        this.tree = tree;
 
         // Handlers
         this.onClickDeleteHandler = this.onClickDelete.bind(this);
@@ -65,7 +68,7 @@ define(function(require) {
         event.preventDefault();
 
         if (this.$variety.val() !== this.tree.variety_id()) {
-            //this.tree.variety_id(this.$variety.val());
+            this.tree.variety_id(this.$variety.val());
         }
 
         if (this.$latitude.val() !== this.tree.latitude()) {
@@ -87,7 +90,14 @@ define(function(require) {
 
     proto.onPopupOpen = function(event) {
         this.$id.text(this.tree.id);
-        this.$content.find('.variety').val(this.tree.variety_id());
+
+        this.$variety.html(map(
+            this.treeVarieties.varieties(),
+            function(variety) {
+                return '<option value="' + variety.id + '">' + variety.name + '</option>';
+            }
+        )).val(this.tree.variety_id());
+
         this.$content.find('.latitude').val(this.tree.latitude());
         this.$content.find('.longitude').val(this.tree.longitude());
     };

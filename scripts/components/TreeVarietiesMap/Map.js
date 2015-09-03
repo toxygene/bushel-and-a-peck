@@ -49,7 +49,7 @@ define(function(require) {
                 id: 'toxygene.nadn5mm9',
                 accessToken: 'pk.eyJ1IjoidG94eWdlbmUiLCJhIjoiRjZQLTBrTSJ9.g8_WRX9WFPs9t5gAdYiaDA'
             })
-        ).addLayer(new VarietyLayers(this.treeVarieties.currentVarieties));
+        ).addLayer(new VarietyLayers(this.treeVarieties));
 
         return this;
     };

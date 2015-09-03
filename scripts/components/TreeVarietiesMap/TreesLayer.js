@@ -15,17 +15,22 @@ define(function(require) {
      * Initialize the trees layer
      *
      * @constructor
+     * @param {TreeVarietiesViewModel} treeVarieties
      * @param {Array[]} trees
-     * @param {EditTreePopup} editTreePopup
      */
-    proto.initialize = function(trees, editTreePopup) {
-        this.layerGroup = L.layerGroup();
+    proto.initialize = function(treeVarieties, trees) {
+        this.markers = {};
         this.trees = trees;
-        this.editTreePopup = editTreePopup;
+        this.treeVarieties = treeVarieties;
 
+        this.layerGroup = L.layerGroup();
+
+        // Handlers
         this.addTreeHandler = this.addTree.bind(this);
         this.onTreesChangeHandler = this.onTreesChange.bind(this);
+        this.removeTreeHandler = this.removeTree.bind(this);
 
+        // Observers
         this.trees.subscribe(this.onTreesChangeHandler, null, 'arrayChange');
     };
 
@@ -49,7 +54,9 @@ define(function(require) {
      *
      */
     proto.addTree = function(tree) {
-        this.layerGroup.addLayer(new TreeMarker(tree, this.editTreePopup));
+        this.markers[tree.id] = new TreeMarker(this.treeVarieties, tree);
+        this.layerGroup.addLayer(this.markers[tree.id]);
+        return this;
     };
 
     /**
@@ -71,7 +78,25 @@ define(function(require) {
             this.addTreeHandler
         );
 
-        // TODO handle deletes
+        forEach(
+            pluck(
+                filter(
+                    changes,
+                    function(change) {
+                        return change.status == 'deleted';
+                    }
+                ),
+                'value'
+            ),
+            this.removeTreeHandler
+        );
+    };
+
+    proto.removeTree = function(tree) {
+        this.layerGroup.removeLayer(this.markers[tree.id]);
+        delete this.markers[tree.id];
+
+        return this;
     };
 
     return TreesLayer;

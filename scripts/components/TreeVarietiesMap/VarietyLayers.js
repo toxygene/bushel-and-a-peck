@@ -14,10 +14,11 @@ define(function(require) {
     /**
      * Initialize the layer
      *
-     * @param {observableArray} currentVarieties
+     * @param {TreeVarietiesViewModel} treeVarieties
      */
-    proto.initialize = function(currentVarieties) {
+    proto.initialize = function(treeVarieties) {
         this.layers = {};
+        this.treeVarieties = treeVarieties;
 
         this.controlLayers = L.control.layers(null, null, { collapsed: false });
 
@@ -27,7 +28,9 @@ define(function(require) {
         this.removeVarietyHandler = this.removeVariety.bind(this);
 
         // Observers
-        currentVarieties.subscribe(this.onVarietiesChangeHandler, null, 'arrayChange');
+        this.treeVarieties
+            .currentVarieties
+            .subscribe(this.onVarietiesChangeHandler, null, 'arrayChange');
     };
 
     /**
@@ -37,7 +40,7 @@ define(function(require) {
      * @param {VarietyViewModel} variety
      */
     proto.addVariety = function(variety) {
-        this.layers[variety.id] = new TreesLayer(variety.trees);
+        this.layers[variety.id] = new TreesLayer(this.treeVarieties, variety.trees);
 
         this.controlLayers.addOverlay(this.layers[variety.id], variety.name);
     };
