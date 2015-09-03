@@ -4,22 +4,23 @@ define(function(require) {
     var $ = require('jquery');
     var BaseComponent = require('components/BaseComponent');
     var inheritPrototype = require('mout/lang/inheritPrototype');
-    var MapComponent = require('components/TreeVarietiesMap/MapComponent');
+    var Map = require('components/TreeVarietiesMap/Map');
 
     /**
      * Tree varieties map
      *
+     * @class TreeVarietiesMap
      * @constuctor
      * @param {jQuery} $element
      * @param {Object} options
      */
-    var TreeVarietiesMapComponent = function($element, options) {
+    var TreeVarietiesMap = function($element, options) {
         BaseComponent.call(this, $element, options);
     };
 
-    TreeVarietiesMapComponent.SELECTOR = '.js-tree-varieties-map';
+    TreeVarietiesMap.SELECTOR = '.js-tree-varieties-map';
 
-    var proto = inheritPrototype(TreeVarietiesMapComponent, BaseComponent);
+    var proto = inheritPrototype(TreeVarietiesMap, BaseComponent);
 
     /**
      * Create the map component
@@ -27,7 +28,7 @@ define(function(require) {
      * @chainable
      */
     proto.createChildren = function() {    
-        this.map = new MapComponent(this.$element.find(MapComponent.SELECTOR));
+        this.map = new Map(this.$element.find(Map.SELECTOR));
 
         return this;
     };
@@ -63,5 +64,5 @@ define(function(require) {
         return this;
     };
 
-    return TreeVarietiesMapComponent;
+    return TreeVarietiesMap;
 });

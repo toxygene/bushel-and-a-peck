@@ -3,7 +3,7 @@ define(function(require) {
 
     var $ = require('jquery');
     var forEach = require('mout/array/forEach');
-    var TreeVarietiesMapComponent = require('components/TreeVarietiesMapComponent');
+    var TreeVarietiesMapComponent = require('components/TreeVarietiesMap');
 
     var componentModules = [
         TreeVarietiesMapComponent
