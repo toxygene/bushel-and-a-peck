@@ -14,6 +14,8 @@ define(function(require) {
         this.variety_id = ko.observable();
     };
 
+    var proto = TreeViewModel.prototype;
+
     /**
      * Builder
      *
@@ -31,6 +33,15 @@ define(function(require) {
         tree.variety_id(variety_id);
         
         return tree;
+    };
+
+    proto.getData = function() {
+        return {
+            id: this.id,
+            latitude: this.latitude(),
+            longitude: this.longitude(),
+            variety_id: this.variety_id()
+        };
     };
     
     return TreeViewModel;

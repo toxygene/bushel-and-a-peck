@@ -4,6 +4,7 @@ define(function(require) {
     var filter = require('mout/array/filter');
     var find = require('mout/array/find');
     var forEach = require('mout/array/forEach');
+    var invoke = require('mout/array/invoke');
     var ko = require('knockout');
     var map = require('mout/array/map');
     var pluck = require('mout/array/pluck');
@@ -30,7 +31,7 @@ define(function(require) {
         this.trees = ko.observableArray();
         this.varieties = ko.observableArray();
 
-        this.currentVarieties = ko.computed(this.getVarietiesWithTreesHandler)
+        this.currentVarieties = ko.pureComputed(this.getVarietiesWithTreesHandler)
             .extend({trackArrayChanges: true});
 
         // Initial data population
@@ -91,7 +92,7 @@ define(function(require) {
      * @return {array}
      */
     proto.getVarietiesWithTrees = function() {
-        return map(
+        var varieties = map(
             unique(
                 map(
                     this.trees(),
@@ -102,6 +103,8 @@ define(function(require) {
             ),
             this.findVarietyByIdHandler
         );
+
+        return varieties;
     };
 
     return TreeVarietiesViewModel;

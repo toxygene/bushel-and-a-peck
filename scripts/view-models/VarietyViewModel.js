@@ -3,6 +3,7 @@ define(function(require) {
 
     var filter = require('mout/array/filter');
     var ko = require('knockout');
+    var map = require('mout/array/map');
 
     /**
      * @class VarietyViewModel
@@ -24,6 +25,8 @@ define(function(require) {
         }, this).extend({trackArrayChanges: true});
     };
 
+    var proto = VarietyViewModel.prototype;
+
     /**
      * Builder
      *
@@ -38,6 +41,14 @@ define(function(require) {
         variety.name = name;
 
         return variety;
+    };
+
+    proto.getData = function() {
+        return {
+            id: this.id,
+            name: this.name,
+            trees: map(this.trees(), function(tree) { return tree.id; })
+        }
     };
 
     return VarietyViewModel;

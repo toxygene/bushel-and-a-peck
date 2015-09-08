@@ -8,19 +8,22 @@ define(function(require) {
     var TreeMarker = require('components/TreeVarietiesMap/TreeMarker');
 
     var TreesLayer = L.Class.extend({});
-
     var proto = TreesLayer.prototype;
+
+    var i = 0;
 
     /**
      * Initialize the trees layer
      *
      * @constructor
      * @param {TreeVarietiesViewModel} treeVarieties
-     * @param {Array[]} trees
+     * @param {VarietyViewModel} variety
      */
-    proto.initialize = function(treeVarieties, trees) {
+    proto.initialize = function(treeVarieties, variety) {
+        this.id = ++i;
+
         this.markers = {};
-        this.trees = trees;
+        this.variety = variety;
         this.treeVarieties = treeVarieties;
 
         this.layerGroup = L.layerGroup();
@@ -31,7 +34,7 @@ define(function(require) {
         this.removeTreeHandler = this.removeTree.bind(this);
 
         // Observers
-        this.trees.subscribe(this.onTreesChangeHandler, null, 'arrayChange');
+        this.treesSubscriber = this.variety.trees.subscribe(this.onTreesChangeHandler, null, 'arrayChange');
     };
 
     /**
@@ -65,19 +68,6 @@ define(function(require) {
      * @param {Object[]} changes
      */
     proto.onTreesChange = function(changes) {
-        forEach( // call add tree on each
-            pluck( // pluck the value of the change
-                filter( // filter non-added statuses
-                    changes,
-                    function(change) {
-                        return change.status == 'added'
-                    }
-                ),
-                'value'
-            ),
-            this.addTreeHandler
-        );
-
         forEach(
             pluck(
                 filter(
@@ -90,6 +80,19 @@ define(function(require) {
             ),
             this.removeTreeHandler
         );
+
+        forEach( // call add tree on each
+            pluck( // pluck the value of the change
+                filter( // filter non-added statuses
+                    changes,
+                    function(change) {
+                        return change.status == 'added'
+                    }
+                ),
+                'value'
+            ),
+            this.addTreeHandler
+        );
     };
 
     proto.removeTree = function(tree) {
@@ -97,6 +100,10 @@ define(function(require) {
         delete this.markers[tree.id];
 
         return this;
+    };
+
+    proto.toString = function() {
+        return 'VarietyLayer #' + this.id;
     };
 
     return TreesLayer;

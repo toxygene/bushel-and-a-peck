@@ -25,6 +25,8 @@ define(function(require) {
         this.$variety = this.$content.find('.variety');
         this.$latitude = this.$content.find('.latitude');
         this.$longitude = this.$content.find('.longitude');
+        this.$delete = this.$content.find('.delete');
+        this.$save = this.$content.find('.save');
 
         this.tree = tree;
         this.treeVarieties = treeVarieties;
@@ -42,20 +44,18 @@ define(function(require) {
         this.onPopupOpenHandler = this.onPopupOpen.bind(this);
         this.onLatLngChangeHandler = this.onLatLngChange.bind(this);
 
-        // Events
-        this.$content.find('.delete').on('click', this.onClickDeleteHandler);
-        this.$content.find('.save').on('click', this.onClickSaveHandler);
-        this.marker.on('popupopen', this.onPopupOpenHandler);
-
         // Observers
-        this.tree.latitude.subscribe(this.onLatLngChangeHandler);
-        this.tree.longitude.subscribe(this.onLatLngChangeHandler);
+        this.latitudeSubscriber = this.tree.latitude.subscribe(this.onLatLngChangeHandler);
+        this.longitudeSubscriber = this.tree.longitude.subscribe(this.onLatLngChangeHandler);
 
-        this.marker
-            .bindPopup(this.$content.get(0));
+        this.marker.bindPopup(this.$content.get(0));
     };
 
     proto.onAdd = function(map) {
+        this.$delete.on('click', this.onClickDeleteHandler);
+        this.$save.on('click', this.onClickSaveHandler);
+        this.marker.on('popupopen', this.onPopupOpenHandler);
+
         this.marker.addTo(map);
     };
 
@@ -103,6 +103,10 @@ define(function(require) {
     };
 
     proto.onRemove = function(map) {
+        this.$delete.off('click', this.onClickDeleteHandler);
+        this.$save.off('click', this.onClickSaveHandler);
+        this.marker.off('popupopen', this.onPopupOpenHandler);
+
         map.removeLayer(this.marker);
     };
 

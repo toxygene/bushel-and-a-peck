@@ -10,7 +10,7 @@ define(function(require) {
     var L = require('leaflet');
     var map = require('mout/array/map');
     var TreeVarietiesViewModel = require('view-models/TreeVarietiesViewModel');
-    var VarietyLayers = require('components/TreeVarietiesMap/VarietyLayers');
+    var VarietiesControlLayer = require('components/TreeVarietiesMap/VarietiesControlLayer');
 
     /**
      * Map component
@@ -49,7 +49,11 @@ define(function(require) {
                 id: 'toxygene.nadn5mm9',
                 accessToken: 'pk.eyJ1IjoidG94eWdlbmUiLCJhIjoiRjZQLTBrTSJ9.g8_WRX9WFPs9t5gAdYiaDA'
             })
-        ).addLayer(new VarietyLayers(this.treeVarieties));
+        );
+
+        this.varietiesControlLayer = new VarietiesControlLayer(this.treeVarieties);
+
+        this.map.addLayer(this.varietiesControlLayer);
 
         return this;
     };

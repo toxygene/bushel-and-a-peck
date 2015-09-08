@@ -5,11 +5,11 @@ define(function(require) {
     var forEach = require('mout/array/forEach');
     var L = require('leaflet');
     var pluck = require('mout/array/pluck');
-    var TreesLayer = require('components/TreeVarietiesMap/TreesLayer');
+    var VarietyLayer = require('components/TreeVarietiesMap/VarietyLayer');
 
-    var VarietyLayers = L.Class.extend({});
+    var VarietiesControlLayer = L.Class.extend({});
 
-    var proto = VarietyLayers.prototype;
+    var proto = VarietiesControlLayer.prototype;
 
     /**
      * Initialize the layer
@@ -29,7 +29,7 @@ define(function(require) {
 
         // Observers
         this.treeVarieties
-            .currentVarieties
+            .currentVarieties //.varieties // todo currentVarieties should be used, but is causing a bug I can't track down
             .subscribe(this.onVarietiesChangeHandler, null, 'arrayChange');
     };
 
@@ -40,8 +40,7 @@ define(function(require) {
      * @param {VarietyViewModel} variety
      */
     proto.addVariety = function(variety) {
-        this.layers[variety.id] = new TreesLayer(this.treeVarieties, variety.trees);
-
+        this.layers[variety.id] = new VarietyLayer(this.treeVarieties, variety);
         this.controlLayers.addOverlay(this.layers[variety.id], variety.name);
     };
 
@@ -50,6 +49,7 @@ define(function(require) {
      * @param {L.Map} map
      */
     proto.onAdd = function(map) {
+        this.map = map;
         this.controlLayers.addTo(map);
     };
 
@@ -57,7 +57,8 @@ define(function(require) {
      * @param {L.Map} map
      */
     proto.onRemove = function(map) {
-        this.controlLayers.removeFrom(map);
+        this.map = null;
+        map.removeLayer(this.controlLayers);
     };
 
     /**
@@ -66,20 +67,6 @@ define(function(require) {
      * @param {array} changes
      */
     proto.onVarietiesChange = function(changes) {
-        // Call addVariety for any added varieties
-        forEach(
-            pluck(
-                filter(
-                    changes,
-                    function(change) {
-                        return change.status == 'added';
-                    }
-                ),
-                'value'
-            ),
-            this.addVarietyHandler
-        );
-
         // Call removeVariety for any removed varieties
         forEach(
             pluck(
@@ -93,6 +80,20 @@ define(function(require) {
             ),
             this.removeVarietyHandler
         );
+
+        // Call addVariety for any added varieties
+        forEach(
+            pluck(
+                filter(
+                    changes,
+                    function(change) {
+                        return change.status == 'added';
+                    }
+                ),
+                'value'
+            ),
+            this.addVarietyHandler
+        );
     };
 
     /**
@@ -102,11 +103,15 @@ define(function(require) {
      * @param {VarietyViewModel} variety
      */
     proto.removeVariety = function(variety) {
-        this.controlLayers.removeLayer(this.layers[variety.id]);
+        if (this.map && this.map.hasLayer(this.layers[variety.id])) {
+            this.map.removeLayer(this.layers[variety.id]);
+        }
+
+        this.controlLayers.removeLayer(this.layers[variety.id]);  // TODO this does not call onRemove for the layer!!! Must be done manually!
         delete this.layers[variety.id];
 
         return this;
     };
 
-    return VarietyLayers;
+    return VarietiesControlLayer;
 });
