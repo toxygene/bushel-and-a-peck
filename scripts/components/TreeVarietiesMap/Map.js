@@ -9,8 +9,8 @@ define(function(require) {
     var ko = require('knockout');
     var L = require('leaflet');
     var map = require('mout/array/map');
-    var TreeVarietiesViewModel = require('view-models/TreeVarietiesViewModel');
     var VarietiesControlLayer = require('components/TreeVarietiesMap/VarietiesControlLayer');
+    var VarietiesViewModel = require('view-models/VarietiesViewModel');
 
     /**
      * Map component
@@ -22,7 +22,7 @@ define(function(require) {
     var Map = function($element, options) {
         BaseComponent.call(this, $element, options);
 
-        this.treeVarieties = new TreeVarietiesViewModel();
+        this.varietiesViewModel = new VarietiesViewModel();
     };
 
     Map.SELECTOR = '.js-map';
@@ -51,7 +51,7 @@ define(function(require) {
             })
         );
 
-        this.varietiesControlLayer = new VarietiesControlLayer(this.treeVarieties);
+        this.varietiesControlLayer = new VarietiesControlLayer(this.varietiesViewModel);
 
         this.map.addLayer(this.varietiesControlLayer);
 
@@ -64,9 +64,8 @@ define(function(require) {
      * @chainable
      */
     proto.createHandlers = function() {
-        this.addTreeHandler = this.addTree.bind(this);
         this.addVarietyHandler = this.addVariety.bind(this);
-        this.onTreesLoadedHandler = this.onTreesLoaded.bind(this);
+        this.onVarietiesLoadedHandler = this.onVarietiesLoaded.bind(this);
 
         return this;
     };
@@ -77,60 +76,34 @@ define(function(require) {
      * @chainable
      */
     proto.enable = function() {
-        this.loadTrees();
+        this.loadVarieties();
         
         return this;
     };
 
     /**
-     * Load the trees from the API endpoint
+     * Load the varieties from the API endpoint
      *
      * @return {Promise}
      */
-    proto.loadTrees = function() {
-        return GetJson('api.json').then(this.onTreesLoadedHandler);
+    proto.loadVarieties = function() {
+        return GetJson('api.json').then(this.onVarietiesLoadedHandler);
     };
     
     /**
-     * XHR handler for successful loading of tree data
+     * XHR handler for successful loading of variety data
      *
      * @param {array} results
      */
-    proto.onTreesLoaded = function(results) {
-        forEach(
-            results.included,
-            this.addVarietyHandler
-        );
-
+    proto.onVarietiesLoaded = function(results) {
         forEach(
             results.data,
-            this.addTreeHandler
+            this.addVarietyHandler
         );
     };
 
-    /**
-     * Add a tree to the map
-     *
-     * @chainable
-     * @param {array} tree
-     */
-    proto.addTree = function(tree) {
-        this.treeVarieties
-            .addTree(tree);
-
-        return this;
-    };
-
-    /**
-     * Add a variety to the map
-     *
-     * @chainable
-     * @param {array} variety
-     */
     proto.addVariety = function(variety) {
-        this.treeVarieties
-            .addVariety(variety);
-
+        this.varietiesViewModel.addVarietyData(variety);
         return this;
     };
 

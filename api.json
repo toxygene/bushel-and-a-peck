@@ -1,30 +1,17 @@
 {
     "data": [{
-        "type": "tree",
-        "id": 1,
-        "latitude": 44.8735,
-        "longitude": -91.3015,
-        "variety_id": "1"
-    }, {
-        "type": "tree",
-        "id": 2,
-        "latitude": 44.873571,
-        "longitude": -91.30,
-        "variety_id": "1"
-    }, {
-        "type": "tree",
-        "id": 3,
-        "latitude": 44.873571,
-        "longitude": -91.3015,
-        "variety_id": "2"
-    }],
-    "included": [{
         "type": "variety",
         "id": 1,
-        "name": "Gala"
+        "name": "Gala",
+        "rows": [
+            [[44.8736, -91.3], [44.87357, -91.301], [44.8738, -91.302]]
+        ]
     }, {
         "type": "variety",
         "id": 2,
-        "name": "Granny Smith"
+        "name": "Granny Smith",
+        "rows": [
+            [[44.87355, -91.303], [44.8737, -91.302], [44.8737, -91.304]]
+        ]
     }]
 }

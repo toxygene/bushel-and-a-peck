@@ -1,54 +1,44 @@
 define(function(require) {
     "use strict";
 
-    var filter = require('mout/array/filter');
+    var forEach = require('mout/array/forEach');
     var ko = require('knockout');
     var map = require('mout/array/map');
 
     /**
      * @class VarietyViewModel
      * @constructor
-     * @param {observableArray} trees
      */
-    var VarietyViewModel = function(trees) {
+    var VarietyViewModel = function() {
         this.id = null;
         this.name = null;
+        this.rows = ko.observableArray();
 
-        this.trees = ko.computed(function() {
-            return filter(
-                trees(),
-                function(tree) {
-                    return tree.variety_id() == this.id;
-                },
-                this
-            )
-        }, this).extend({trackArrayChanges: true});
+        this.addRowHandler = this.addRow.bind(this);
+    };
+
+    VarietyViewModel.build = function(variety) {
+        var varietyViewModel = new VarietyViewModel();
+        varietyViewModel.id = variety.id;
+        varietyViewModel.name = variety.name;
+        forEach(variety.rows, varietyViewModel.addRowHandler);
+
+        return varietyViewModel;
     };
 
     var proto = VarietyViewModel.prototype;
 
-    /**
-     * Builder
-     *
-     * @param {observableArray} trees
-     * @param {int} id
-     * @param {string} name
-     * @returns {VarietyViewModel}
-     */
-    VarietyViewModel.build = function(trees, id, name) {
-        var variety = new VarietyViewModel(trees);
-        variety.id = id;
-        variety.name = name;
-
-        return variety;
+    proto.addRow = function(points) {
+        this.rows.push(ko.observable(points));
     };
 
-    proto.getData = function() {
-        return {
-            id: this.id,
-            name: this.name,
-            trees: map(this.trees(), function(tree) { return tree.id; })
-        }
+    proto.getRows = function() {
+        return map(
+            this.rows(),
+            function(row) {
+                return row();
+            }
+        );
     };
 
     return VarietyViewModel;

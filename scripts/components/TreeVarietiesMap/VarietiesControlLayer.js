@@ -14,36 +14,31 @@ define(function(require) {
     /**
      * Initialize the layer
      *
-     * @param {TreeVarietiesViewModel} treeVarieties
+     * @param {VarietiesViewModel} varietiesViewModel
      */
-    proto.initialize = function(treeVarieties) {
+    proto.initialize = function(varietiesViewModel) {
         this.layers = {};
-        this.treeVarieties = treeVarieties;
 
         this.controlLayers = L.control.layers(null, null, { collapsed: false });
 
         // Handlers
         this.addVarietyHandler = this.addVariety.bind(this);
         this.onVarietiesChangeHandler = this.onVarietiesChange.bind(this);
-        this.removeVarietyHandler = this.removeVariety.bind(this);
 
-        // Observers
-        this.treeVarieties
-            .currentVarieties //.varieties // todo currentVarieties should be used, but is causing a bug I can't track down
-            .subscribe(this.onVarietiesChangeHandler, null, 'arrayChange');
+        // Event listeners
+        varietiesViewModel.varieties.subscribe(this.onVarietiesChangeHandler, null, 'arrayChange');
     };
 
     /**
      * Add a variety to the layers
      *
      * @chainable
-     * @param {VarietyViewModel} variety
+     * @param {VarietiesViewModel} variety
      */
     proto.addVariety = function(variety) {
-        this.layers[variety.id] = new VarietyLayer(this.treeVarieties, variety);
+        this.layers[variety.id] = new VarietyLayer(variety);
         this.controlLayers.addOverlay(this.layers[variety.id], variety.name);
     };
-
 
     /**
      * @param {L.Map} map
@@ -67,20 +62,6 @@ define(function(require) {
      * @param {array} changes
      */
     proto.onVarietiesChange = function(changes) {
-        // Call removeVariety for any removed varieties
-        forEach(
-            pluck(
-                filter(
-                    changes,
-                    function(change) {
-                        return change.status == 'deleted';
-                    }
-                ),
-                'value'
-            ),
-            this.removeVarietyHandler
-        );
-
         // Call addVariety for any added varieties
         forEach(
             pluck(
@@ -94,23 +75,6 @@ define(function(require) {
             ),
             this.addVarietyHandler
         );
-    };
-
-    /**
-     * Remove a variety from the layers
-     *
-     * @chainable
-     * @param {VarietyViewModel} variety
-     */
-    proto.removeVariety = function(variety) {
-        if (this.map && this.map.hasLayer(this.layers[variety.id])) {
-            this.map.removeLayer(this.layers[variety.id]);
-        }
-
-        this.controlLayers.removeLayer(this.layers[variety.id]);  // TODO this does not call onRemove for the layer!!! Must be done manually!
-        delete this.layers[variety.id];
-
-        return this;
     };
 
     return VarietiesControlLayer;
