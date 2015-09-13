@@ -4,7 +4,6 @@ define(function(require) {
     var BaseComponent = require('components/BaseComponent');
     var find = require('mout/array/find');
     var forEach = require('mout/array/forEach');
-    var GetJson = require('utils/GetJson');
     var inheritPrototype = require('mout/lang/inheritPrototype');
     var ko = require('knockout');
     var L = require('leaflet');
@@ -59,51 +58,13 @@ define(function(require) {
     };
 
     /**
-     * Create the handlers for the component
-     *
-     * @chainable
-     */
-    proto.createHandlers = function() {
-        this.addVarietyHandler = this.addVariety.bind(this);
-        this.onVarietiesLoadedHandler = this.onVarietiesLoaded.bind(this);
-
-        return this;
-    };
-
-    /**
      * Enable the component
      *
      * @chainable
      */
     proto.enable = function() {
-        this.loadVarieties();
+        this.varietiesViewModel.loadData();
         
-        return this;
-    };
-
-    /**
-     * Load the varieties from the API endpoint
-     *
-     * @return {Promise}
-     */
-    proto.loadVarieties = function() {
-        return GetJson('api.json').then(this.onVarietiesLoadedHandler);
-    };
-    
-    /**
-     * XHR handler for successful loading of variety data
-     *
-     * @param {array} results
-     */
-    proto.onVarietiesLoaded = function(results) {
-        forEach(
-            results.data,
-            this.addVarietyHandler
-        );
-    };
-
-    proto.addVariety = function(variety) {
-        this.varietiesViewModel.addVarietyData(variety);
         return this;
     };
 

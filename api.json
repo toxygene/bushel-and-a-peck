@@ -2,16 +2,32 @@
     "data": [{
         "type": "variety",
         "id": 1,
-        "name": "Gala",
-        "rows": [
-            [[44.8736, -91.3], [44.87357, -91.301], [44.8738, -91.302]]
-        ]
+        "name": "Gala"
     }, {
         "type": "variety",
         "id": 2,
-        "name": "Granny Smith",
-        "rows": [
-            [[44.87355, -91.303], [44.8737, -91.302], [44.8737, -91.304]]
-        ]
+        "name": "Granny Smith"
+    }],
+    "included": [{
+        "type": "row",
+        "id": 1,
+        "name": "A-1",
+        "description": "blah",
+        "variety_id": 1,
+        "points": [[44.8736, -91.3], [44.87357, -91.301], [44.8738, -91.302]]
+    }, {
+        "type": "row",
+        "id": 2,
+        "name": "A-2",
+        "description": "Other blah",
+        "variety_id": 2,
+        "points": [[44.87355, -91.303], [44.8737, -91.302], [44.8737, -91.304]]
+    }, {
+        "type": "row",
+        "id": 3,
+        "name": "A-3",
+        "description": "Blah 3",
+        "variety_id": 2,
+        "points": [[44.8738, -91.3], [44.8738, -91.302], [44.8737, -91.304]]
     }]
 }

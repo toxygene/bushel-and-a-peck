@@ -26,7 +26,7 @@ define(function(require) {
         this.onVarietiesChangeHandler = this.onVarietiesChange.bind(this);
 
         // Event listeners
-        varietiesViewModel.varieties.subscribe(this.onVarietiesChangeHandler, null, 'arrayChange');
+        varietiesViewModel.currentVarieties.subscribe(this.onVarietiesChangeHandler, null, 'arrayChange');
     };
 
     /**
