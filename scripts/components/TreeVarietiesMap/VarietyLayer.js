@@ -11,11 +11,11 @@ define(function(require) {
 
     var proto = VarietyLayer.prototype;
 
-    proto.initialize = function(variety) {
+    proto.initialize = function(treeVarietyViewModel) {
         this.layers = {};
         this.layerGroup = L.layerGroup();
 
-        this.variety = variety;
+        this.treeVarietyViewModel = treeVarietyViewModel;
 
         // Handlers
         this.addRowHandler = this.addRow.bind(this);
@@ -23,9 +23,9 @@ define(function(require) {
         this.removeRowHandler = this.removeRow.bind(this);
 
         // Observers
-        this.rowsSubscriber = this.variety.rows.subscribe(this.onRowsChangeHandler, null, 'arrayChange');
+        this.rowsSubscriber = this.treeVarietyViewModel.rows.subscribe(this.onRowsChangeHandler, null, 'arrayChange');
 
-        forEach(this.variety.rows(), this.addRowHandler);
+        forEach(this.treeVarietyViewModel.rows(), this.addRowHandler);
     };
 
     proto.destroy = function() {
@@ -33,8 +33,8 @@ define(function(require) {
     };
 
     proto.addRow = function(row) {
-        this.layers[row.id] = new RowLayer(row);
-        this.layerGroup.addLayer(this.layers[row.id]);
+        this.layers[row.id()] = new RowLayer(row);
+        this.layerGroup.addLayer(this.layers[row.id()]);
         return this;
     };
 
@@ -47,7 +47,6 @@ define(function(require) {
     };
 
     proto.onRowsChange = function(changes) {
-        debugger;
         forEach(
             pluck(
                 filter(

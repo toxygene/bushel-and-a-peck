@@ -6,14 +6,16 @@ define(function(require) {
     var GetJson = require('utils/GetJson');
     var ko = require('knockout');
     var map = require('mout/array/map');
-    var RowViewModel = require('view-models/RowViewModel');
-    var VarietyViewModel = require('view-models/VarietyViewModel');
+    var RowModel = require('models/Row');
+    var some = require('mout/array/some');
+    var TreeVarietyViewModel = require('view-models/TreeVariety');
+    var VarietyModel = require('models/Variety');
 
     /**
-     * @class VarietiesViewModel
+     * @class TreeVarietiesViewModel
      * @constructor
      */
-    var VarietiesViewModel = function() {
+    var TreeVarieties = function() {
         this.rows = ko.observableArray();
         this.varieties = ko.observableArray();
 
@@ -28,7 +30,7 @@ define(function(require) {
             .extend({trackArrayChanges: true});
     };
 
-    var proto = VarietiesViewModel.prototype;
+    var proto = TreeVarieties.prototype;
 
     proto.addRow = function(row) {
         this.rows.push(row);
@@ -37,8 +39,6 @@ define(function(require) {
     };
 
     proto.addVariety = function(variety) {
-        variety.rows = this.getComputedRowsForVariety(variety);
-
         this.varieties.push(variety);
 
         return this;
@@ -49,18 +49,27 @@ define(function(require) {
             return filter(
                 this.rows(),
                 function(row) {
-                    return row.variety_id() == variety.id;
+                    return row.variety_id() == variety.id();
                 }
             );
         }.bind(this)).extend({trackArrayChanges: true});
+    };
+
+    proto.getTreeVarietyViewModelForVariety = function(variety) {
+        return new TreeVarietyViewModel(variety, this.getComputedRowsForVariety(variety));
     };
 
     proto.getVarietiesWithRows = function() {
         return filter(
             this.varieties(),
             function(variety) {
-                return variety.rows().length;
-            }
+                return some(
+                    this.rows(),
+                    function(row) {
+                        return variety.id() == row.variety_id();
+                    }
+                )
+            }.bind(this)
         );
     };
 
@@ -72,7 +81,7 @@ define(function(require) {
         forEach(
             map(
                 results.data,
-                VarietyViewModel.build
+                VarietyModel.build
             ),
             this.addVarietyHandler
         );
@@ -80,11 +89,11 @@ define(function(require) {
         forEach(
             map(
                 results.included,
-                RowViewModel.build
+                RowModel.build
             ),
             this.addRowHandler
         );
     };
 
-    return VarietiesViewModel;
+    return TreeVarieties;
 });

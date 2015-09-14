@@ -14,10 +14,11 @@ define(function(require) {
     /**
      * Initialize the layer
      *
-     * @param {VarietiesViewModel} varietiesViewModel
+     * @param {TreeVarietiesViewModel} treeVarietiesViewModel
      */
-    proto.initialize = function(varietiesViewModel) {
+    proto.initialize = function(treeVarietiesViewModel) {
         this.layers = {};
+        this.treeVarietiesViewModel = treeVarietiesViewModel;
 
         this.controlLayers = L.control.layers(null, null, { collapsed: false });
 
@@ -26,18 +27,24 @@ define(function(require) {
         this.onVarietiesChangeHandler = this.onVarietiesChange.bind(this);
 
         // Event listeners
-        varietiesViewModel.currentVarieties.subscribe(this.onVarietiesChangeHandler, null, 'arrayChange');
+        this.currentVarietiesSubscriber = this.treeVarietiesViewModel.currentVarieties.subscribe(this.onVarietiesChangeHandler, null, 'arrayChange');
+
+        forEach(this.treeVarietiesViewModel.varieties(), this.addVariety);
+    };
+
+    proto.destroy = function() {
+        this.currentVarietiesSubscriber.dispose();
     };
 
     /**
      * Add a variety to the layers
      *
      * @chainable
-     * @param {VarietiesViewModel} variety
+     * @param {VarietyModel} variety
      */
     proto.addVariety = function(variety) {
-        this.layers[variety.id] = new VarietyLayer(variety);
-        this.controlLayers.addOverlay(this.layers[variety.id], variety.name);
+        this.layers[variety.id()] = new VarietyLayer(this.treeVarietiesViewModel.getTreeVarietyViewModelForVariety(variety));
+        this.controlLayers.addOverlay(this.layers[variety.id()], variety.name());
     };
 
     /**
@@ -62,7 +69,6 @@ define(function(require) {
      * @param {array} changes
      */
     proto.onVarietiesChange = function(changes) {
-        // Call addVariety for any added varieties
         forEach(
             pluck(
                 filter(

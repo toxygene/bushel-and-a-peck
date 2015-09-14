@@ -9,7 +9,7 @@ define(function(require) {
     var L = require('leaflet');
     var map = require('mout/array/map');
     var VarietiesControlLayer = require('components/TreeVarietiesMap/VarietiesControlLayer');
-    var VarietiesViewModel = require('view-models/VarietiesViewModel');
+    var TreeVarietiesViewModel = require('view-models/TreeVarieties');
 
     /**
      * Map component
@@ -21,7 +21,7 @@ define(function(require) {
     var Map = function($element, options) {
         BaseComponent.call(this, $element, options);
 
-        this.varietiesViewModel = new VarietiesViewModel();
+        this.treeVarietiesViewModel = new TreeVarietiesViewModel();
     };
 
     Map.SELECTOR = '.js-map';
@@ -50,7 +50,7 @@ define(function(require) {
             })
         );
 
-        this.varietiesControlLayer = new VarietiesControlLayer(this.varietiesViewModel);
+        this.varietiesControlLayer = new VarietiesControlLayer(this.treeVarietiesViewModel);
 
         this.map.addLayer(this.varietiesControlLayer);
 
@@ -63,7 +63,7 @@ define(function(require) {
      * @chainable
      */
     proto.enable = function() {
-        this.varietiesViewModel.loadData();
+        this.treeVarietiesViewModel.loadData();
         
         return this;
     };
