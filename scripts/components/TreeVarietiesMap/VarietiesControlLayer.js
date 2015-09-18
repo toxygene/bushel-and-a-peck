@@ -25,6 +25,7 @@ define(function(require) {
         // Handlers
         this.addVarietyHandler = this.addVariety.bind(this);
         this.onVarietiesChangeHandler = this.onVarietiesChange.bind(this);
+        this.removeVarietyHandler = this.removeVariety.bind(this);
 
         // Event listeners
         this.currentVarietiesSubscriber = this.treeVarietiesViewModel.currentVarieties.subscribe(this.onVarietiesChangeHandler, null, 'arrayChange');
@@ -43,7 +44,7 @@ define(function(require) {
      * @param {VarietyModel} variety
      */
     proto.addVariety = function(variety) {
-        this.layers[variety.id()] = new VarietyLayer(this.treeVarietiesViewModel.getTreeVarietyViewModelForVariety(variety));
+        this.layers[variety.id()] = new VarietyLayer(this.treeVarietiesViewModel.getTreeVarietyViewModelForVariety(variety), this.treeVarietiesViewModel);
         this.controlLayers.addOverlay(this.layers[variety.id()], variety.name());
     };
 
@@ -81,6 +82,31 @@ define(function(require) {
             ),
             this.addVarietyHandler
         );
+
+        forEach(
+            pluck(
+                filter(
+                    changes,
+                    function(change) {
+                        return change.status == 'deleted';
+                    }
+                ),
+                'value'
+            ),
+            this.removeVarietyHandler
+        );
+    };
+
+    /**
+     *
+     */
+    proto.removeVariety = function(variety) {
+        this.controlLayers.removeLayer(this.layers[variety.id()]);
+        if (this.map) {
+            this.map.removeLayer(this.layers[variety.id()]);
+        }
+        delete this.layers[variety.id()];
+        return this;
     };
 
     return VarietiesControlLayer;

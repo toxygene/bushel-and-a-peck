@@ -11,10 +11,11 @@ define(function(require) {
 
     var proto = VarietyLayer.prototype;
 
-    proto.initialize = function(treeVarietyViewModel) {
+    proto.initialize = function(treeVarietyViewModel, treeVarietiesViewModel) {
         this.layers = {};
         this.layerGroup = L.layerGroup();
 
+        this.treeVarietiesViewModel = treeVarietiesViewModel;
         this.treeVarietyViewModel = treeVarietyViewModel;
 
         // Handlers
@@ -33,7 +34,7 @@ define(function(require) {
     };
 
     proto.addRow = function(row) {
-        this.layers[row.id()] = new RowLayer(row);
+        this.layers[row.id()] = new RowLayer(row, this.treeVarietiesViewModel);
         this.layerGroup.addLayer(this.layers[row.id()]);
         return this;
     };
@@ -52,7 +53,7 @@ define(function(require) {
                 filter(
                     changes,
                     function(change) {
-                        return change.status == "removed";
+                        return change.status == "deleted";
                     }
                 ),
                 'value'
@@ -75,8 +76,8 @@ define(function(require) {
     };
 
     proto.removeRow = function(row) {
-        this.layerGroup.removeLayer(this.layers[row.id]);
-        delete this.layers[row.id];
+        this.layerGroup.removeLayer(this.layers[row.id()]);
+        delete this.layers[row.id()];
         return this;
     };
 
